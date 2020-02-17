@@ -4,13 +4,13 @@ echo "/******************************************* WELCOME TO FLIP COIN SIMULATI
 
 # CONSTANT
 IS_HEAD=1
+DOUBLET=2
 
 #VARIABLES
-headCount=0
-tailCount=0
+numberOfFlip=0
 
 # DECLARING DICTIONARY
-declare -A singletCombination
+declare -A doubletCombination
 
 # READING FLIPPING COUNT FROM USER
 read -p "Enter a number of time you want to flip a coin : " numberOfCoinFlip
@@ -21,25 +21,44 @@ function getRandom(){
 	echo $randomCheck
 }
 
-# STORING HEADCOUNT AND TAILCOUNT INTO DICTIONARY
+# CONDITION TO CHECK NUMBER OF FLIP IS EQUAL TO ZERO
 if [ $numberOfCoinFlip -ne 0 ]
 then
-	for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
-	{
-		result="$( getRandom )"
-		if [ $result -eq $IS_HEAD ]
-		then
-			singletCombination[head]=$((++headCount))
-		else
-			singletCombination[tail]=$((++tailCount))
-		fi
+# FUNCTION TO CREATE A COMBINATION
+	function getCombination(){
+   numberOfCoin=$1
+	echo "$numberOfCoin"
+		for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
+		{
+			coinSide=""
+			for (( coin=1; coin<=numberOfCoin; coin++ ))
+			{
+				result="$( getRandom )"
+				if [ $result -eq $IS_HEAD ]
+				then
+					coinSide+=H
+				else
+					coinSide+=T
+				fi
+			}
+			doubletCombination[$coinSide]=$((${doubletCombination[$coinSide]}+1))
+		}
 	}
 
-# CALCULATING PERCENATGE OF SINGLET COMBINATION
-	headPercentage=`echo "scale=2; $headCount*100/$numberOfCoinFlip" | bc`
-	tailPercentage=`echo "scale=2; $tailCount*100/$numberOfCoinFlip" | bc`
+# FUNCTION TO CALCULATE PERCENATGE OF COMBINATION
+	function calculatePercentage(){
+		for key in ${!doubletCombination[@]}
+		do
+			doubletCombination[$key]=`echo "scale=2; ${doubletCombination[$key]}*100/$numberOfCoinFlip" | bc`
+		done
+	}
 
+# FUNCTION CALL TO GET COMBINATION AND PERCENTAGE OF COMBINATION
+	getCombination $DOUBLET
+	calculatePercentage
 else
-	echo "Please enter the number greater then Zero"
+   echo "Please enter the number greater then Zero"
 fi
+
+
 
