@@ -21,7 +21,7 @@ function getRandom(){
 	echo $randomCheck
 }
 
-# COMPUTING HEADCOUNT AND TAILCOUNT THEN STORING IN DICTIONARY
+# STORING HEADCOUNT AND TAILCOUNT INTO DICTIONARY
 if [ $numberOfCoinFlip -ne 0 ]
 then
 	for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
@@ -35,9 +35,10 @@ then
 		fi
 	}
 
-# CALCULATING PERCENATGE OF SINGLET PERCENTAGE
+# CALCULATING PERCENATGE OF SINGLET COMBINATION
 	headPercentage=`echo "scale=2; $headCount*100/$numberOfCoinFlip" | bc`
 	tailPercentage=`echo "scale=2; $tailCount*100/$numberOfCoinFlip" | bc`
+
 else
 	echo "Please enter the number greater then Zero"
 fi
