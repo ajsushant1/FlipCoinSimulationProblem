@@ -4,13 +4,13 @@ echo "/******************************************* WELCOME TO FLIP COIN SIMULATI
 
 # CONSTANT
 IS_HEAD=1
-DOUBLET=2
+TRIPLET=3
 
 #VARIABLES
 numberOfFlip=0
 
 # DECLARING DICTIONARY
-declare -A doubletCombination
+declare -A tripletCombination
 
 # READING FLIPPING COUNT FROM USER
 read -p "Enter a number of time you want to flip a coin : " numberOfCoinFlip
@@ -21,12 +21,12 @@ function getRandom(){
 	echo $randomCheck
 }
 
-# CONDITION TO CHECK NUMBER OF FLIP IS EQUAL TO ZERO
+# CONDITION TO CHECK NUMBER OF FLIP IS NOT EQUAL TO ZERO
 if [ $numberOfCoinFlip -ne 0 ]
 then
 # FUNCTION TO CREATE A COMBINATION
 	function getCombination(){
-   numberOfCoin=$1
+   local numberOfCoin=$1
 	echo "$numberOfCoin"
 		for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
 		{
@@ -41,21 +41,22 @@ then
 					coinSide+=T
 				fi
 			}
-			doubletCombination[$coinSide]=$((${doubletCombination[$coinSide]}+1))
+			tripletCombination[$coinSide]=$((${tripletCombination[$coinSide]}+1))
 		}
 	}
 
 # FUNCTION TO CALCULATE PERCENATGE OF COMBINATION
 	function calculatePercentage(){
-		for key in ${!doubletCombination[@]}
+		for key in ${!tripletCombination[@]}
 		do
-			doubletCombination[$key]=`echo "scale=2; ${doubletCombination[$key]}*100/$numberOfCoinFlip" | bc`
+			tripletCombination[$key]=`echo "scale=2; ${tripletCombination[$key]}*100/$numberOfCoinFlip" | bc`
 		done
 	}
 
 # FUNCTION CALL TO GET COMBINATION AND PERCENTAGE OF COMBINATION
-	getCombination $DOUBLET
+	getCombination $TRIPLET
 	calculatePercentage
+
 else
    echo "Please enter the number greater then Zero"
 fi
