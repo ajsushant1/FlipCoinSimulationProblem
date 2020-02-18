@@ -4,16 +4,24 @@ echo "/******************************************* WELCOME TO FLIP COIN SIMULATI
 
 # CONSTANT
 IS_HEAD=1
+SINGLET=1
+DOUBLET=2
 TRIPLET=3
 
 #VARIABLES
 numberOfFlip=0
 
 # DECLARING DICTIONARY
-declare -A tripletCombination
+declare -A combination
 
 # READING FLIPPING COUNT FROM USER
 read -p "Enter a number of time you want to flip a coin : " numberOfCoinFlip
+
+echo "Please select your combination. "
+echo "Select 1 for Singlet combination"
+echo "Select 2 for Doublet combination"
+echo "Select 3 for Triplet combination"
+read choice
 
 # TO GET RANDOM NUMBER
 function getRandom(){
@@ -27,7 +35,6 @@ then
 # FUNCTION TO CREATE A COMBINATION
 	function getCombination(){
    local numberOfCoin=$1
-	echo "$numberOfCoin"
 		for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
 		{
 			coinSide=""
@@ -41,22 +48,43 @@ then
 					coinSide+=T
 				fi
 			}
-			tripletCombination[$coinSide]=$((${tripletCombination[$coinSide]}+1))
+			combination[$coinSide]=$((${combination[$coinSide]}+1))
 		}
 	}
 
 # FUNCTION TO CALCULATE PERCENATGE OF COMBINATION
 	function calculatePercentage(){
-		for key in ${!tripletCombination[@]}
+		for key in ${!combination[@]}
 		do
-			tripletCombination[$key]=`echo "scale=2; ${tripletCombination[$key]}*100/$numberOfCoinFlip" | bc`
+			combination[$key]=`echo "scale=2; ${combination[$key]}*100/$numberOfCoinFlip" | bc`
 		done
 	}
 
-# FUNCTION CALL TO GET COMBINATION AND PERCENTAGE OF COMBINATION
-	getCombination $TRIPLET
-	calculatePercentage
+# CASE STATEMENTS TO PERFORM USER CHOICE 
+	case $choice in
+		$SINGLET)
+			getCombination $SINGLET
+			calculatePercentage
+					;;
+		$DOUBLET)
+			getCombination $DOUBLET
+			calculatePercentage
+					;;
+		$TRIPLET)
+			getCombination $TRIPLET
+         calculatePercentage
+					;;
+		*)
+			echo "Enter valid choice number"
+					;;
+	esac
 
+# SORTING DICTIONARY AND DISPLAYING WINNING COMBINATION
+	for index in ${!combination[@]}
+	do
+		echo "$index ${combination[$index]}"
+	done |
+	sort -k2 -rn | head -1
 else
    echo "Please enter the number greater then Zero"
 fi
