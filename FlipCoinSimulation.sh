@@ -2,7 +2,7 @@
 
 echo "/******************************************* WELCOME TO FLIP COIN SIMULATION *******************************************/"
 
-# CONSTANT
+# CONSTANTS
 IS_HEAD=1
 SINGLET=1
 DOUBLET=2
@@ -17,6 +17,9 @@ declare -A combination
 # READING FLIPPING COUNT FROM USER
 read -p "Enter a number of time you want to flip a coin : " numberOfCoinFlip
 
+# CONDITION TO CHECK NUMBER OF FLIP IS NOT EQUAL TO ZERO
+if [ $numberOfCoinFlip -ne 0 ]
+then
 echo "Please select your combination. "
 echo "Select 1 for Singlet combination"
 echo "Select 2 for Doublet combination"
@@ -29,9 +32,6 @@ function getRandom(){
 	echo $randomCheck
 }
 
-# CONDITION TO CHECK NUMBER OF FLIP IS NOT EQUAL TO ZERO
-if [ $numberOfCoinFlip -ne 0 ]
-then
 # FUNCTION TO CREATE A COMBINATION
 	function getCombination(){
    local numberOfCoin=$1
