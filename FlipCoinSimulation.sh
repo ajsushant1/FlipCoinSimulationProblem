@@ -34,7 +34,7 @@ function getRandom(){
 
 # FUNCTION TO CREATE A COMBINATION
 	function getCombination(){
-   local numberOfCoin=$1
+	local numberOfCoin=$1
 		for (( flip=1; flip<=numberOfCoinFlip; flip++ ))
 		{
 			coinSide=""
